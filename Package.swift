@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-	name: "PythonSwiftPackages",
+	name: "PyCoreBluetooth",
 	platforms: [.iOS(.v13)],
 	products: [
 
