@@ -20,6 +20,7 @@ let package = Package(
 			name: "PyCoreBluetooth",
 			dependencies: [
 				.product(name: "PythonSwiftCore", package: "KivySwiftLink"),
+                .product(name: "PySwiftObject", package: "KivySwiftLink"),
 			],
 			plugins: [ .plugin(name: "Swiftonize", package: "SwiftonizePlugin") ]
 		),
