@@ -247,8 +247,8 @@ class CBPeripheral:
     def discoverCharacteristics(self, characteristicUUIDs: Optional[list[CBUUID]], service: CBService): ...
 
     # @no_protocol
-    # @func_options(call_target="writeValue", no_labels={"data": True}, args_alias={"characteristic": "for"})
-    # def writeCharacteristic(self, data: data, characteristic: CBCharacteristic, type: CBCharacteristicWriteType): ...
+    @func_options(call_target="writeValue")
+    def writeCharacteristic(self, data: data, characteristic: CBCharacteristic, type: int = None): ...
 
     @no_protocol
     @func_options(call_target="writeValue", no_labels={"data": True}, args_alias={"descriptor": "for"})

@@ -39,6 +39,12 @@ extension PyCBPeripheralDelegate: PyConvertible {
     }
 }
 
+extension CBPeripheral {
+	public func writeValue(data: Data, characteristic: CBCharacteristic, type: Int = 1 ) {
+		writeValue(data, for: characteristic, type: .init(rawValue: type) ?? .withoutResponse)
+	}
+}
+
 public class PyCBCentralManager: NSObject {
     private var centralManager: CBCentralManager?
     var peripherals: [CBPeripheral] = []
