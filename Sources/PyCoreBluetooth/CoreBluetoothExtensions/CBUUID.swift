@@ -9,10 +9,10 @@ import PyUnpack
 import PyTypes
 
 @PyClassByExtension(bases: [.hash, .str])
-extension CBUUID: PySerializing.PySerializable, PySwiftKit.PyHashable, PySwiftKit.PyStrProtocol, PyClassProtocol {
+extension CBUUID: PySerializing.PySerializable, PySwiftKit.PyHashable, PySwiftKit.PyStrProtocol, PySwiftWrapper.PyClassProtocol {
     
     @PyMethod
-    public static func create(string: String) -> Self {
+    public static func create(string: String) -> CBUUID {
         Self.init(string: string)
     }
     

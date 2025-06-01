@@ -25,9 +25,16 @@ struct PyCorebluetooth: PyModuleProtocol {
         CBService.self,
         CBDescriptor.self,
         CBL2CAPChannel.self,
+        CBCentralManager.self,
         PyCBCentralManager.self,
-        PyCBPeripheralCallback.self
+        PyCBPeripheralCallback.self,
+        CBCentralManagerCallback.self
     ]
+    
+    //@PyFunction
+    static func peripheral_callback(cls: PyPointer) throws -> ()throws->PyCBPeripheralCallback {
+        {try .init(object: cls) }
+    }
 }
 
 extension PySwiftModuleImport {

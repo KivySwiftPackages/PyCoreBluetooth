@@ -17,8 +17,8 @@ import PySwiftWrapper
 
 
 @PyClass
-@PyCallback
-final class PyCBPeripheralCallback: NSObject, PySerializable {
+@PyContainer
+final class PyCBPeripheralCallback: NSObject, PySerialize {
     
     
     @PyCall private func didOpen(_ peripheral: CBPeripheral, channel: CBL2CAPChannel?, error: Error?)
@@ -91,6 +91,7 @@ extension PyCBPeripheralCallback: CBPeripheralDelegate {
     }
     
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        //print("swift: didUpdateValueFor \(characteristic) -> \(characteristic.value ?? .init())")
         didUpdateCharacteristic(peripheral, characteristic: characteristic, error: error)
     }
     

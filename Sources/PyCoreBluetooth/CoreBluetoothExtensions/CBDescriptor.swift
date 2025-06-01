@@ -12,18 +12,25 @@ import PySwiftWrapper
 import PySerializing
 
 @PyClassByExtension(
+    bases: [.str,.repr],
     expr: """
     weak open var characteristic: CBCharacteristic? { get }
 
     //open var value: Any? { get }
     """
 )
-extension CBDescriptor: PySerializing.PySerializable, PySwiftWrapper.PyClassProtocol {
+extension CBDescriptor: PySerializing.PySerializable, PySwiftWrapper.PyClassProtocol, PySwiftKit.PyReprProtocol, PySwiftKit.PyStrProtocol {
     
     public var pyPointer: PyPointer {
         Self.asPyPointer(self)
     }
+    public func __repr__() -> String {
+        self.description
+    }
     
+    public func __str__() -> String {
+        self.description
+    }
 }
 extension PyDeserialize where Self: CBDescriptor {
     public init(object: PyPointer) throws {

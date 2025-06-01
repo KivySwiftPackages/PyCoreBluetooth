@@ -9,7 +9,7 @@ import PyUnpack
 extension CBCharacteristicWriteType: PySerializing.PySerializable {}
 
 
-@PyClassByExtension(bases: [.str, .hash], expr: """
+@PyClassByExtension(bases: [.str, .hash, .repr], expr: """
     
     open var uuid: CBUUID { get }
     
@@ -26,13 +26,27 @@ extension CBCharacteristicWriteType: PySerializing.PySerializable {}
     open var isNotifying: Bool { get }
         
 """)
-extension CBCharacteristic: PySerializing.PySerializable, PySwiftKit.PyHashable, PySwiftWrapper.PyClassProtocol, PySwiftKit.PyStrProtocol {
+extension CBCharacteristic: PySerializing.PySerializable, PySwiftKit.PyHashable, PySwiftWrapper.PyClassProtocol, PySwiftKit.PyStrProtocol, PySwiftKit.PyReprProtocol {
     
     public func __hash__() -> Int { uuid.hash }
     
     public func __str__() -> String {
         uuid.uuidString
     }
+    
+    public func __repr__() -> String {
+        uuid.description
+    }
+    
+    func test() {
+        UnPackPySwiftObject(with: .none, as: CBCharacteristic.self)
+    }
+    
+//    @PyMethod
+//    static func create(uuid: String, primary: Bool) -> CBService {
+//        let new = CBMutableCharacteristic(type: <#T##CBUUID#>, properties: ., value: <#T##Data?#>, permissions: <#T##CBAttributePermissions#>)
+//        return new
+//    }
    
 }
 

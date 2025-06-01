@@ -3,9 +3,7 @@
 
 import PackageDescription
 
-let kivy = false
-let use_psk = true
-let local = true
+let local = false
 
 let pykit_package: Package.Dependency = if local {
     .package(path: "/Users/codebuilder/Documents/GitHub/PySwiftKit")
@@ -13,20 +11,11 @@ let pykit_package: Package.Dependency = if local {
     .package(url: "https://github.com/KivySwiftLink/PySwiftKit", from: .init(311, 0, 0))
 }
 
-
-let psw: Package.Dependency = if local {
-    .package(path: "/Volumes/CodeSSD/PythonSwiftGithub/PySwiftWrapper")
+let pyfile_package: Package.Dependency = if local {
+    .package(path: "../PyFileGenerator")
 } else {
-    .package(path: "/Volumes/CodeSSD/PythonSwiftGithub/PySwiftWrapper")
+    .package(url: "https://github.com/PythonSwiftLink/PyFileGenerator", from: .init(0, 0, 1))
 }
-
-let pykit: Target.Dependency = if use_psk {
-    .product(name: "SwiftonizeModules", package: "PySwiftKit")
-} else {
-    .product(name: "SwiftonizeModules", package: "PythonSwiftLink")
-}
-
-
 
 
 let package = Package(
@@ -39,15 +28,13 @@ let package = Package(
 	],
 	dependencies: [
         pykit_package,
-        psw,
-        .package(path: "../PyFileGenerator")
+        pyfile_package
 	],
 	targets: [
 		.target(
 			name: "PyCoreBluetooth",
 			dependencies: [
-                pykit,
-                .product(name: "PySwiftWrapper", package: "PySwiftWrapper")
+                .product(name: "SwiftonizeModules", package: "PySwiftKit"),
 			]
 		),
 		

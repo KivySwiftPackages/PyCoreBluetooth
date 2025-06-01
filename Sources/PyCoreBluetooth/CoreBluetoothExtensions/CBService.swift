@@ -8,6 +8,7 @@ import PySwiftWrapper
 import PySerializing
 
 @PyClassByExtension(
+    bases: [.hash, .str, .repr],
     expr: """
     
     weak open var peripheral: CBPeripheral? { get }
@@ -20,13 +21,22 @@ import PySerializing
     
     """
 )
-extension CBService: PySerializing.PySerialize, PySerializing.PyDeserialize, PySwiftKit.PyHashable, PySwiftWrapper.PyClassProtocol {
+extension CBService: PySerializing.PySerialize, PySerializing.PyDeserialize, PySwiftKit.PyHashable, PySwiftWrapper.PyClassProtocol, PySwiftKit.PyReprProtocol {
+    
     public func __hash__() -> Int {
         uuid.hashValue
     }
     
+    public func __str__() -> String {
+        uuid.uuidString
+    }
+    
+    public func __repr__() -> String {
+        uuid.description
+    }
+    
     @PyMethod
-    static func create2(uuid: String, primary: Bool) -> CBService {
+    static func create(uuid: String, primary: Bool) -> CBService {
         let new = CBMutableService(type: .init(string: uuid), primary: primary)
         return new
     }

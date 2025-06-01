@@ -1,204 +1,149 @@
-from typing import Optional, Protocol, Callable
-
+from typing import Callable, Protocol
 
 class PyCBCentralManager():
-    peripherals: list["CBPeripheral"]
-    isConnected: bool
+	peripherals: dict[str, "CBPeripheral"]
 
-    def getPeripherals(self) -> list["CBPeripheral"]: 
-        pass
+	def __init__(self, *args, **kwargs): ...
 
-    def connect(self, peripheral: "CBPeripheral"): 
-        pass
+	def connect(self, peripheral: "CBPeripheral"): ...
 
-    def disconnect(self, peripheral: "CBPeripheral"): 
-        pass
+	def disconnect(self, peripheral: "CBPeripheral"): ...
 
+	def scan(self, services: list["CBUUID"] | None): ...
 
-class PyCBPeripheralCallback(Protocol):
+	def stop_scan(self): ...
 
-    def didOpen(
-        self,
-        peripheral: "CBPeripheral",
-        channel: "CBL2CAPChannel" | None,
-        error: str | None
-    ): 
-        pass
+class PyCBPeripheralCallback():
+	def __init__(self, callback: "Callbacks"): ...
 
-    def didModifyServices(self, peripheral: "CBPeripheral", invalidatedServices: list["CBService"]): 
-        pass
+	class Callbacks(Protocol):
+		def didOpen(self, peripheral: "CBPeripheral", channel: "CBL2CAPChannel | None", error: str | None): ...
 
-    def didDiscoverServices(self, peripheral: "CBPeripheral", error: str | None): 
-        pass
+		def didModifyServices(self, peripheral: "CBPeripheral", invalidatedServices: list["CBService"]): ...
 
-    def didDiscoverDescriptors(
-        self,
-        peripheral: "CBPeripheral",
-        characteristic: "CBCharacteristic",
-        error: str | None
-    ): 
-        pass
+		def didDiscoverServices(self, peripheral: "CBPeripheral", error: str | None): ...
 
-    def didDiscoverCharacteristics(
-        self,
-        peripheral: "CBPeripheral",
-        service: "CBService",
-        error: str | None
-    ): 
-        pass
+		def didDiscoverDescriptors(self, peripheral: "CBPeripheral", characteristic: "CBCharacteristic", error: str | None): ...
 
-    def didUpdateNotificationState(
-        self,
-        peripheral: "CBPeripheral",
-        characteristic: "CBCharacteristic",
-        error: str | None
-    ): 
-        pass
+		def didDiscoverCharacteristics(self, peripheral: "CBPeripheral", service: "CBService", error: str | None): ...
 
-    def didDiscoverIncludedServices(
-        self,
-        peripheral: "CBPeripheral",
-        service: "CBService",
-        error: str | None
-    ): 
-        pass
+		def didUpdateNotificationState(self, peripheral: "CBPeripheral", characteristic: "CBCharacteristic", error: str | None): ...
 
-    def didUpdateName(self, peripheral: "CBPeripheral"): 
-        pass
+		def didDiscoverIncludedServices(self, peripheral: "CBPeripheral", service: "CBService", error: str | None): ...
 
-    def didReadRSSI(self, peripheral: "CBPeripheral", RSSI: int, error: str | None): 
-        pass
+		def didUpdateName(self, peripheral: "CBPeripheral"): ...
 
-    def didWriteCharacteristic(
-        self,
-        peripheral: "CBPeripheral",
-        characteristic: "CBCharacteristic",
-        error: str | None
-    ): 
-        pass
+		def didReadRSSI(self, peripheral: "CBPeripheral", RSSI: int, error: str | None): ...
 
-    def didWriteDescriptor(
-        self,
-        peripheral: "CBPeripheral",
-        descriptor: "CBDescriptor",
-        error: str | None
-    ): 
-        pass
+		def didWriteCharacteristic(self, peripheral: "CBPeripheral", characteristic: "CBCharacteristic", error: str | None): ...
 
-    def didUpdateCharacteristic(
-        self,
-        peripheral: "CBPeripheral",
-        characteristic: "CBCharacteristic",
-        error: str | None
-    ): 
-        pass
+		def didWriteDescriptor(self, peripheral: "CBPeripheral", descriptor: "CBDescriptor", error: str | None): ...
 
-    def didUpdateDescriptor(
-        self,
-        peripheral: "CBPeripheral",
-        descriptor: "CBDescriptor",
-        error: str | None
-    ): 
-        pass
+		def didUpdateCharacteristic(self, peripheral: "CBPeripheral", characteristic: "CBCharacteristic", error: str | None): ...
 
-    def isReady(self, peripheral: "CBPeripheral"): 
-        pass
+		def didUpdateDescriptor(self, peripheral: "CBPeripheral", descriptor: "CBDescriptor", error: str | None): ...
 
+		def isReady(self, peripheral: "CBPeripheral"): ...
+
+class CBCentralManagerCallback():
+	def __init__(self, callback: "Callbacks"): ...
+
+	class Callbacks(Protocol):
+		def didUpdateState(self, central: "CBCentralManager"): ...
+
+		def didDiscover(self, peripheral: "CBPeripheral", RSSI: int): ...
+
+		def didConnect(self, peripheral: "CBPeripheral"): ...
+
+		def didDisconnectPeripheral(self, peripheral: "CBPeripheral", error: str | None): ...
 
 class CBUUID():
-
-    @staticmethod
-    def create(string: str) -> "Self": 
-        pass
-
+	def create(self, string: str) -> "CBUUID": ...
 
 class CBPeripheral():
+	def get_delegate(self) -> object | None: ...
 
-    def get_services(self) -> list["CBService"] | None: 
-        pass
+	def set_delegate(self, delegate: "PyCBPeripheralCallback | None"): ...
 
-    def set_delegate(self, delegate: "PyCBPeripheralCallback"): 
-        pass
-    identifier: "UUID"
-    name: str | None
-    state: "CBPeripheralState"
-    services: list["CBService"] | None
-    canSendWriteWithoutResponse: bool
-    ancsAuthorized: bool
+	def readValue(self, kwargs: dict[str, object]): ...
 
-    def readRSSI(self): 
-        pass
+	def writeValue(self, kwargs: dict[str, object]): ...
 
-    def discoverServices(self, serviceUUIDs: list["CBUUID"] | None): 
-        pass
+	identifier: str
 
-    def discoverIncludedServices(
-        self,
-        includedServiceUUIDs: list["CBUUID"] | None,
-        service: "CBService"
-    ): 
-        pass
+	name: str | None
 
-    def discoverCharacteristics(
-        self,
-        characteristicUUIDs: list["CBUUID"] | None,
-        service: "CBService"
-    ): 
-        pass
+	state: "CBPeripheralState"
 
-    def readValue(self, characteristic: "CBCharacteristic"): 
-        pass
+	services: list["CBService"] | None
 
-    def maximumWriteValueLength(self, type: "CBCharacteristicWriteType") -> int: 
-        pass
+	canSendWriteWithoutResponse: bool
 
-    def writeValue(
-        self,
-        data: bytes,
-        characteristic: "CBCharacteristic",
-        type: "CBCharacteristicWriteType"
-    ): 
-        pass
+	ancsAuthorized: bool
 
-    def setNotifyValue(self, enabled: bool, characteristic: "CBCharacteristic"): 
-        pass
+	def readRSSI(self): ...
 
-    def discoverDescriptors(self, characteristic: "CBCharacteristic"): 
-        pass
+	def discoverServices(self, serviceUUIDs: list["CBUUID"] | None): ...
 
-    def readValue(self, descriptor: "CBDescriptor"): 
-        pass
+	def discoverIncludedServices(self, includedServiceUUIDs: list["CBUUID"] | None, service: "CBService"): ...
 
-    def writeValue(self, data: bytes, descriptor: "CBDescriptor"): 
-        pass
+	def discoverCharacteristics(self, characteristicUUIDs: list["CBUUID"] | None, service: "CBService"): ...
 
-    def openL2CAPChannel(self, PSM: "CBL2CAPPSM"): 
-        pass
+	def maximumWriteValueLength(self, type: "CBCharacteristicWriteType") -> int: ...
 
+	def setNotifyValue(self, enabled: bool, characteristic: "CBCharacteristic"): ...
+
+	def discoverDescriptors(self, characteristic: "CBCharacteristic"): ...
+
+	def openL2CAPChannel(self, PSM: "CBL2CAPPSM"): ...
 
 class CBCharacteristic():
-    uuid: "CBUUID"
-    service: "CBService" | None
-    value: bytes | None
-    descriptors: list["CBDescriptor"] | None
-    isBroadcasted: bool
-    isNotifying: bool
+	uuid: "CBUUID"
 
+	service: "CBService | None"
+
+	value: bytes | None
+
+	descriptors: list["CBDescriptor"] | None
+
+	isBroadcasted: bool
+
+	isNotifying: bool
 
 class CBService():
+	def create(self, uuid: str, primary: bool) -> "CBService": ...
 
-    @staticmethod
-    def create2(uuid: str, primary: bool) -> "CBService": 
-        pass
-    peripheral: "CBPeripheral" | None
-    isPrimary: bool
-    includedServices: list["CBService"] | None
-    characteristics: list["CBCharacteristic"] | None
+	peripheral: "CBPeripheral | None"
 
+	isPrimary: bool
+
+	includedServices: list["CBService"] | None
+
+	characteristics: list["CBCharacteristic"] | None
 
 class CBDescriptor():
-    characteristic: "CBCharacteristic" | None
-
+	characteristic: "CBCharacteristic | None"
 
 class CBL2CAPChannel():
-    psm: "CBL2CAPPSM"
+	psm: "CBL2CAPPSM"
+
+class CBCentralManager():
+	def __init__(self, *args, **kwargs): ...
+
+	def scanForPeripherals(self, serviceUUIDs: list["CBUUID"] | None): ...
+
+	def connect(self, peripheral: "CBPeripheral"): ...
+
+	state: "CBManagerState"
+
+	authorization: "CBManagerAuthorization"
+
+	isScanning: bool
+
+	def retrievePeripherals(self, identifiers: list[str]) -> list["CBPeripheral"]: ...
+
+	def retrieveConnectedPeripherals(self, serviceUUIDs: list["CBUUID"]) -> list["CBPeripheral"]: ...
+
+	def stopScan(self): ...
+
+	def cancelPeripheralConnection(self, peripheral: "CBPeripheral"): ...
