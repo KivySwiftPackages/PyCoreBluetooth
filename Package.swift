@@ -10,16 +10,16 @@ let pykit_package: Package.Dependency = if local {
     .package(path: "../PySwiftKit")
 } else {
     if kivy {
-        .package(url: "https://github.com/KivySwiftLink/PySwiftKit", from: .init(311, 0, 0))
+        .package(url: "https://github.com/kv-swift/PySwiftKit", from: .init(311, 0, 0))
     } else {
-        .package(url: "https://github.com/PythonSwiftLink/PySwiftKit", from: .init(311, 0, 0))
+        .package(url: "https://github.com/py-swift/PySwiftKit", from: .init(311, 0, 0))
     }
 }
 
 let pyfile_package: Package.Dependency = if local {
     .package(path: "../PyFileGenerator")
 } else {
-    .package(url: "https://github.com/PythonSwiftLink/PyFileGenerator", from: .init(0, 0, 1))
+    .package(url: "https://github.com/py-swift/PyFileGenerator", from: .init(0, 0, 1))
 }
 
 var platforms: [SupportedPlatform] = [.iOS(.v13), .macOS(.v11)]
