@@ -1,5 +1,7 @@
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext
+from setuptools.command.build_ext import (
+    build_ext
+)
 import subprocess
 
 class SPWExtension(Extension):
@@ -10,8 +12,9 @@ class SPWExtension(Extension):
 class BuildSwiftPackage(build_ext):
 	
 	def build_extension(self, ext: SPWExtension):
-		print("Generating Pip Files:", ext.sources)
 		cwd = self.build_lib
+		print("Generating Pip Files:", cwd)
+		
 		subprocess.run([
 			"swift", "package",
 			"--sdk", "iphoneos",
