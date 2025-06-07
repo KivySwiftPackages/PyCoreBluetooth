@@ -33,7 +33,7 @@ extension CBPeripheralState: PySerializing.PySerialize {
 
     open var canSendWriteWithoutResponse: Bool { get }
 
-    open var ancsAuthorized: Bool { get }
+    // open var ancsAuthorized: Bool { get }
 
     open func readRSSI()
 
