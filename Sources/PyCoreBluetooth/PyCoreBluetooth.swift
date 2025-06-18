@@ -17,7 +17,7 @@ extension UUID: PySerializing.PySerialize {
 
 
 @PyModule
-struct PyCorebluetooth: PyModuleProtocol {
+public struct PyCorebluetooth: PyModuleProtocol {
     static var py_classes: [any (PyClassProtocol & AnyObject).Type] = [
         CBUUID.self,
         CBPeripheral.self,
@@ -32,7 +32,7 @@ struct PyCorebluetooth: PyModuleProtocol {
     ]
     
     //@PyFunction
-    static func peripheral_callback(cls: PyPointer) throws -> ()throws->PyCBPeripheralCallback {
+    public static func peripheral_callback(cls: PyPointer) throws -> ()throws->PyCBPeripheralCallback {
         {try .init(object: cls) }
     }
 }
